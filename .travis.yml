@@ -1,0 +1,47 @@
+---
+matrix:
+  fast_finish: true
+  include:
+  
+    - name: CUDA 10
+      env:
+      - CUDA=10.2.89-1
+      - CUDA_SHORT=10.2
+      - UBUNTU_VERSION=ubuntu1804
+      dist: bionic
+
+
+      sudo: enabled
+      language: python
+      python: 3.7
+      resources:
+          gpu: true
+      before_install:
+      - INSTALLER=cuda-repo-${UBUNTU_VERSION}_${CUDA}_amd64.deb
+      - wget http://developer.download.nvidia.com/compute/cuda/repos/${UBUNTU_VERSION}/x86_64/${INSTALLER}
+      - sudo dpkg -i ${INSTALLER}
+      - wget https://developer.download.nvidia.com/compute/cuda/repos/${UBUNTU_VERSION}/x86_64/7fa2af80.pub
+      - sudo apt-key add 7fa2af80.pub
+      - sudo apt update -qq
+      - sudo apt install -y cuda-core-${CUDA_SHORT/./-} cuda-cudart-dev-${CUDA_SHORT/./-} cuda-cufft-dev-${CUDA_SHORT/./-}
+      - sudo apt clean
+      - CUDA_HOME=/usr/local/cuda-${CUDA_SHORT}
+      - LD_LIBRARY_PATH=${CUDA_HOME}/lib64:${LD_LIBRARY_PATH}
+      - PATH=${CUDA_HOME}/bin:${PATH}
+      install:
+      
+      
+        - wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh
+        - chmod +x miniconda.sh
+        - ./miniconda.sh -b
+        - export PATH=$HOME/miniconda3/bin:$PATH
+        - sudo apt install -y nvidia-cuda-toolkit
+       
+      script:
+        - nvcc --version
+        - conda --version
+        - conda update -n base -c defaults conda --yes
+        - conda create -n fastai --yes
+        - conda init bash
+        - conda install -c pytorch pytorch cudatoolkit=10.0 --yes # CUDA specific
+        - python -c 'import torch; print(torch.cuda.is_available())'  #should print True
