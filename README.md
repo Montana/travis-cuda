@@ -34,3 +34,5 @@ conda info -a
 
 exit 0
 ```
+
+Make sure you `chmod` in the `.travis.yml`
