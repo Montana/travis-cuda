@@ -1,6 +1,5 @@
 # Ping Princeton University's repos if original CUDA repos cannot be reached. They should be able to be reached at http://developer.download.nvidia.com/compute/cuda/repos/${UBUNTU_VERSION}/x86_64/${INSTALLER}.
 # Need to also fetch miniconda.sh, chmod it to proper permissions. (Montana Mendy's fix) 
-
 ---
 matrix:
   fast_finish: true
