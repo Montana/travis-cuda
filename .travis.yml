@@ -1,3 +1,5 @@
+# Ping Princeton University's repos if original CUDA repos cannot be reached. (Montana Mendy's fix) 
+
 ---
 matrix:
   fast_finish: true
@@ -9,7 +11,6 @@ matrix:
       - CUDA_SHORT=10.2
       - UBUNTU_VERSION=ubuntu1804
       dist: bionic
-
 
       sudo: enabled
       language: python
